@@ -12,13 +12,18 @@ export default function PillButton({ title }: PillButtonProps) {
       radius='10'
       type='outline'
       titleStyle={{
-        fontSize: 12
+        fontSize: 12,
+        color: 'lightgray'
+      }}
+      buttonStyle={{
+        borderColor: 'lightgray',
+        paddingHorizontal: 10,
       }}
       icon={{
         name: 'user',
         type: 'font-awesome',
         size: 15,
-        color: 'white',
+        color: 'lightgray',
       }}
     />
   )
