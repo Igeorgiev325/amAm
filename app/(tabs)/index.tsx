@@ -5,13 +5,13 @@ import { ThemedText } from "@/components/ThemedText";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import PillButton from "@/components/PillButton";
 
-export default function Index() {
+export default function Home() {
   return (
     <ParallaxScrollView>
       {/* Pills */}
       <ThemedView style={styles.btnContainer}>
         <PillButton title='Любими' />
-        <PillButton title='Открий' />
+        <PillButton title='Прегледай' />
         <PillButton title='Последвани' />
       </ThemedView>
 
