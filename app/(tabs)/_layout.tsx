@@ -5,6 +5,7 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
+import { Button, color } from "@rneui/base";
 
 
 export default function TabLayout() {
@@ -32,6 +33,28 @@ export default function TabLayout() {
         options={{
           tabBarIcon: ({ color }) => <Icon name="search" size={28} color={color} />
         }}
+      />
+      <Tabs.Screen
+        name="feed"
+        options={{
+          tabBarIcon: ({ color }) => <Icon name="rowing" size={28} color={color} />
+        }}
+      />
+      <Tabs.Screen
+        name="(recipes)/recipe"
+        options={{
+          href: null, headerShown: true, headerTitle: "Recipe", headerTitleAlign: 'center', headerTitleStyle: { fontWeight: 'bold' },
+          headerRight: () => <Button type="outline" icon={{
+            name: 'home',
+            type: 'font-awesome',
+            size: 15,
+            color: 'white',
+          }} />
+        }}
+      />
+      <Tabs.Screen
+        name="(recipes)/test"
+        options={{ href: null }}
       />
     </Tabs>
   )

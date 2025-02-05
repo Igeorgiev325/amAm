@@ -4,6 +4,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import PillButton from "@/components/PillButton";
+import { Link } from "expo-router";
 
 export default function Home() {
   return (
