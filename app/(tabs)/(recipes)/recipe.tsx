@@ -1,5 +1,4 @@
-import { StyleSheet } from "react-native"
-import PagerView from "react-native-pager-view"
+import { ScrollView, StyleSheet } from "react-native"
 import React, { useState, useRef } from "react"
 
 import { ThemedView } from "@/components/ThemedView"
@@ -38,36 +37,36 @@ const Recipe = () => {
     time: 0
   })
 
-  const pagerRef = useRef<PagerView>(null) // Create reference
 
   const handleChange = (val: string, name: string) => {
-    console.log([name])
-    setRecipe({...recipe, [name]: val})
+    console.log(val)
+    setRecipe({ ...recipe, [name]: val })
   }
+
   const goToPage = (pageIndex: number) => {
-    pagerRef.current?.setPageWithoutAnimation(pageIndex)
+    console.log(pageIndex)
   }
 
   return (
     <ThemedView style={styles.container}>
-      <PagerView style={styles.container} initialPage={0} ref={pagerRef}>
-        <ThemedView key="1">
-          <RecipeInfo 
+      <ScrollView horizontal>
+        <ThemedView style={ styles.viewWindow }>
+          <RecipeInfo
             name={recipe}
             handleChange={handleChange}
-            goToPage={goToPage} 
+            goToPage={goToPage}
           />
         </ThemedView>
-        <ThemedView key="2">
+        <ThemedView style={ styles.viewWindow }>
           <RecipeIngredients goToPage={goToPage} />
         </ThemedView>
-        <ThemedView key="3">
+        <ThemedView style={ styles.viewWindow }>
           <RecipeSteps goToPage={goToPage} />
         </ThemedView>
-        <ThemedView key="4">
+        <ThemedView style={ styles.viewWindow }>
           <RecipeSave />
         </ThemedView>
-      </PagerView>
+      </ScrollView>
     </ThemedView>
   )
 }
@@ -76,6 +75,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  viewWindow: {
+    width: 375,
+    paddingHorizontal: 40,
+  }
 });
 
 export default Recipe
