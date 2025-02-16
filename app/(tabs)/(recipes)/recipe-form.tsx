@@ -1,5 +1,5 @@
 import { Dimensions, ScrollView, StyleSheet } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import Carousel, {
   ICarouselInstance,
   Pagination,
@@ -14,13 +14,14 @@ import StepsStep from "../../../components/recipe-steps/StepsStep";
 import CookingTimeStep from "../../../components/recipe-steps/CookingTimeStep";
 import RecipeModel from "@/components/models/RecipeModel";
 
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
+const { width, height } = Dimensions.get("window");
 
 const Recipe = () => {
   const scrollOffsetValue = useSharedValue<number>(0);
   const progress = useSharedValue<number>(0);
   const ref = useRef<ICarouselInstance>(null);
+  const [currentStepIndex, setCurrentStepIndex] = useState<number>(0);
+
   const [recipe, setRecipe] = useState<RecipeModel>({
     name: "",
     category: "",
@@ -30,10 +31,10 @@ const Recipe = () => {
       {
         name: "",
         description: "",
-        picture: "",
+        isChecked: false,
       },
     ],
-    time: 0,
+    time: "",
   });
 
   const onPressPagination = (index: number) => {
@@ -47,23 +48,60 @@ const Recipe = () => {
     });
   };
 
-  const handleChange = (val: string, name: string) => {
-    setRecipe({ ...recipe, [name]: val });
+  const handleChange = (val: string, field: keyof RecipeModel) => {
+    setRecipe((prev) => ({ ...prev, [field]: val }));
   };
 
   const addNewField = () => {
     setRecipe((r) => ({ ...r, ingredients: [...r.ingredients, ""] }));
   };
 
-  const handleIngredientChange = (text: string, ind: any) => {
-    let ingredients = [...recipe.ingredients]
-    ingredients[ind] = text
-    setRecipe((r) => ({ ...r, ingredients }))
+  const handleIngredientChange = (text: string, index: number) => {
+    setRecipe((prev) => {
+      let ingredients = [...prev.ingredients];
+      ingredients[index] = text;
+      return { ...prev, ingredients };
+    });
+  };
+
+  const updateStepField = (text: string, val: "name" | "description") => {
+    setRecipe((prev) => {
+      let updatedSteps = [...prev.steps];
+      updatedSteps[currentStepIndex] = {
+        ...updatedSteps[currentStepIndex],
+        [val]: text,
+      };
+      return { ...prev, steps: updatedSteps };
+    });
+  };
+
+  const toggleSwitch = () => {
+    setRecipe((prev) => {
+      let updatedSteps = [...prev.steps];
+      updatedSteps[currentStepIndex] = {
+        ...updatedSteps[currentStepIndex],
+        isChecked: !updatedSteps[currentStepIndex].isChecked,
+      };
+
+      return { ...prev, steps: updatedSteps };
+    });
+  };
+
+  const addStepField = () => {
+    setRecipe((prev) => {
+      const newSteps = [
+        ...prev.steps,
+        { name: "", description: "", isChecked: false },
+      ];
+      // Update currentStepIndex to point to the newly added step.
+      setCurrentStepIndex(newSteps.length - 1);
+      return { ...prev, steps: newSteps };
+    });
   };
 
   const logRecipe = () => {
-    console.log("Recipe: ", recipe)
-  }
+    console.log("Recipe: ", recipe);
+  };
 
   const goToPage = () => {
     ref.current?.scrollTo({
@@ -72,23 +110,40 @@ const Recipe = () => {
     });
   };
 
-  const data = [
-    <DetailsStep
-      name={recipe}
-      handleChange={handleChange}
-      goToPage={goToPage}
-    />,
-    <IngredientsStep
-      fields={recipe.ingredients}
-      addNewField={addNewField}
-      handleChange={handleIngredientChange}
-      goToPage={goToPage}
-    />,
-    <StepsStep goToPage={goToPage} />,
-    <CookingTimeStep
-      logRecipe={logRecipe}
-    />,
-  ];
+  const carouselData = useMemo(
+    () => [
+      <DetailsStep
+        key="details"
+        name={recipe}
+        handleChange={handleChange}
+        goToPage={goToPage}
+      />,
+      <IngredientsStep
+        key="ingredients"
+        fields={recipe.ingredients}
+        addNewField={addNewField}
+        handleChange={handleIngredientChange}
+        goToPage={goToPage}
+      />,
+      <StepsStep
+        key="steps"
+        steps={recipe.steps}
+        currentStepIndex={currentStepIndex}
+        setCurrentStepIndex={setCurrentStepIndex}
+        updateStepField={updateStepField}
+        toggleSwitch={toggleSwitch}
+        addStepField={addStepField}
+        goToPage={goToPage}
+      />,
+      <CookingTimeStep
+        key="cookingTime"
+        timer={recipe.time}
+        updateTimer={handleChange}
+        logRecipe={logRecipe}
+      />,
+    ],
+    [recipe, currentStepIndex]
+  );
 
   return (
     <ThemedView style={{ flex: 1 }}>
@@ -97,7 +152,7 @@ const Recipe = () => {
         testID={"xxx"}
         width={width}
         height={height - 150}
-        data={data}
+        data={carouselData}
         loop={false}
         defaultScrollOffsetValue={scrollOffsetValue}
         style={{ width: "100%" }}
@@ -111,14 +166,14 @@ const Recipe = () => {
               height: "100%",
             }}
           >
-            {data[index]}
+            {carouselData[index]}
           </ScrollView>
         )}
       />
 
       <Pagination.Basic
         progress={progress}
-        data={data}
+        data={carouselData}
         dotStyle={{ backgroundColor: "#262626" }}
         activeDotStyle={{ backgroundColor: "#f1f1f1" }}
         containerStyle={{ gap: 5, marginBottom: 10 }}
@@ -126,51 +181,6 @@ const Recipe = () => {
       />
     </ThemedView>
   );
-
-  // const [recipe, setRecipe] = useState<RecipeModel>({
-  //   name: '',
-  //   category: '',
-  //   picture: [''],
-  //   ingredients: [''],
-  //   steps: [{
-  //     name: '',
-  //     description: '',
-  //     picture: ''
-  //   }],
-  //   time: 0
-  // })
-
-  // const handleChange = (val: string, name: string) => {
-  //   console.log(val)
-  //   setRecipe({ ...recipe, [name]: val })
-  // }
-
-  // const goToPage = (pageIndex: number) => {
-  //   console.log(pageIndex)
-  // }
-
-  // return (
-  //   <ThemedView style={styles.container}>
-  //     <ScrollView horizontal>
-  //       <ThemedView style={ styles.viewWindow }>
-  //         <RecipeInfo
-  //           name={recipe}
-  //           handleChange={handleChange}
-  //           goToPage={goToPage}
-  //         />
-  //       </ThemedView>
-  //       <ThemedView style={ styles.viewWindow }>
-  //         <RecipeIngredients goToPage={goToPage} />
-  //       </ThemedView>
-  //       <ThemedView style={ styles.viewWindow }>
-  //         <RecipeSteps goToPage={goToPage} />
-  //       </ThemedView>
-  //       <ThemedView style={ styles.viewWindow }>
-  //         <RecipeSave />
-  //       </ThemedView>
-  //     </ScrollView>
-  //   </ThemedView>
-  // )
 };
 
 const styles = StyleSheet.create({});

@@ -1,7 +1,7 @@
-interface StepsModel {
-  name: string,
-  description: string,
-  picture: string
+interface StepModel {
+  name: string;
+  description: string;
+  isChecked: boolean;
 }
 
-export default StepsModel
+export default StepModel

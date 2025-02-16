@@ -2,26 +2,13 @@
 import { Button, ButtonGroup, Input } from "@rneui/themed"
 
 import { ThemedView } from "@/components/ThemedView"
+import StepModel from "../models/StepsModel"
+import RecipeModel from "../models/RecipeModel"
 
 type InfoProps = {
-  name: Recipe,
-  handleChange: (val: string, name: string) => void
+  name: RecipeModel,
+  handleChange: (val: string, field: keyof RecipeModel) => void
   goToPage: () => void
-}
-
-type Recipe = {
-  name: string,
-  category: string,
-  picture: string[],
-  ingredients: string[],
-  steps: Steps[],
-  time: number
-}
-
-type Steps = {
-  name: string,
-  description: string,
-  picture: string
 }
 
 export default function DetailsStep({ name, handleChange, goToPage }: InfoProps) {

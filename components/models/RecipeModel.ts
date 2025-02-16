@@ -1,12 +1,12 @@
-import StepsModel from './StepsModel'
+import StepModel from './StepsModel'
 
 interface RecipeModel {
     name: string,
     category: string,
     picture: string[],
     ingredients: string[],
-    steps: StepsModel[],
-    time: number
+    steps: StepModel[],
+    time: string
   }
 
   export default RecipeModel
