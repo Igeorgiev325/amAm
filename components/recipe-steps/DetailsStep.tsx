@@ -6,7 +6,7 @@ import { ThemedView } from "@/components/ThemedView"
 type InfoProps = {
   name: Recipe,
   handleChange: (val: string, name: string) => void
-  goToPage: (index: number) => void
+  goToPage: () => void
 }
 
 type Recipe = {
@@ -24,7 +24,7 @@ type Steps = {
   picture: string
 }
 
-export default function RecipeInfo({ name, handleChange, goToPage }: InfoProps) {
+export default function DetailsStep({ name, handleChange, goToPage }: InfoProps) {
   return (
     <ThemedView style={{ justifyContent: 'space-evenly', height: '100%'}}>
       <ThemedView style={{ }}>
@@ -45,7 +45,7 @@ export default function RecipeInfo({ name, handleChange, goToPage }: InfoProps) 
         <Button title="Снимка" />
       </ThemedView>
 
-      <Button title="Съставки" onPress={() => goToPage(1)} />
+      <Button title="Съставки" onPress={() => goToPage()} />
     </ThemedView>
   )
 }

@@ -2,7 +2,11 @@ import { Button, Input } from "@rneui/themed";
 
 import { ThemedView } from "@/components/ThemedView";
 
-export default function RecipeSave() {
+interface CookingTimeStepProps {
+  logRecipe: () => void
+}
+
+export default function CookingTimeStep({ logRecipe }: CookingTimeStepProps) {
   return (
     <ThemedView>
       <Input 
@@ -10,7 +14,7 @@ export default function RecipeSave() {
         placeholder="Време за приготвяне"
         inputMode="numeric"
       />
-      <Button title="Log the recipe"/>
+      <Button title="Log the recipe" onPress={logRecipe}/>
     </ThemedView>
   )
 }

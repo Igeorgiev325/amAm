@@ -6,31 +6,29 @@ import { ThemedView } from "@/components/ThemedView"
 import { Button, Input } from "@rneui/themed"
 
 type IngredientsProps = {
-  goToPage: (index: number) => void
+  fields: string[]
+  addNewField: () => void
+  handleChange: (text: string, ind: any) => void
+  goToPage: () => void
 }
 
-type Field = {
-  id: number,
-  ingredient: string
-}
+export default function IngredientsStep({ fields, addNewField, handleChange, goToPage }: IngredientsProps) {
+  // const [fields, setField] = useState<string[]>([''])
 
-export default function RecipeIngredients({ goToPage }: IngredientsProps) {
-  const [fields, setField] = useState<string[]>([''])
+  // const addNewField = () => {
+  //   setField(e => [...e, ''])
+  // }
 
-  const addNewField = () => {
-    setField(e => [...e, ''])
-  }
+  // const handleChange = (text: string, ind: any) => {
+  //   const newField = [...fields]
+  //   newField[ind] = text
+  //   setField(newField)
+  // }
 
-  const handleChange = (text: string, ind: any) => {
-    const newField = [...fields]
-    newField[ind] = text
-    setField(newField)
-  }
-
-  const handlePress = (ind: any) => {
-    const newerField = fields.filter((_, i) => i !== ind) 
-    setField(newerField)
-  }
+  // const handlePress = (ind: any) => {
+  //   const newerField = fields.filter((_, i) => i !== ind) 
+  //   setField(newerField)
+  // }
 
   return (
     <ThemedView style={{ height: '100%', justifyContent: 'space-evenly' }}>
@@ -43,14 +41,14 @@ export default function RecipeIngredients({ goToPage }: IngredientsProps) {
               onChangeText={(text: string) => handleChange(text, ind)}
               inputStyle={{ color: 'white' }}
             />
-            <ThemedText onPress={() => handlePress(ind)}>X</ThemedText>
+            {/* <ThemedText onPress={() => handlePress(ind)}>X</ThemedText> */}
           </ ThemedView>
         ))}
+        <Button title="Нова съставка" onPress={() => addNewField()} />
       </ThemedView>
 
-      <Button title="Нова съставка" onPress={() => addNewField()} />
 
-      <Button title="Стъпки" onPress={() => goToPage(2)} />
+      <Button title="Стъпки" onPress={() => goToPage()} />
     </ThemedView>
   )
 }

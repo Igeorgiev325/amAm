@@ -2,10 +2,10 @@ import { ThemedView } from '@/components/ThemedView'
 import { Button, Input } from '@rneui/themed'
 
 type StepProps = {
-  goToPage: (index: number) => void
+  goToPage: () => void
 }
 
-export default function RecipeSteps({ goToPage }: StepProps) {
+export default function StepsStep({ goToPage }: StepProps) {
   return (
     <ThemedView>
       <Input
@@ -17,7 +17,7 @@ export default function RecipeSteps({ goToPage }: StepProps) {
         placeholder='Описание на стъпката'
       />
       <Button title="Добави снимка" />
-      <Button title="Запазване" onPress={() => goToPage(3)} />
+      <Button title="Запазване" onPress={() => goToPage()} />
 
     </ThemedView>
   )
