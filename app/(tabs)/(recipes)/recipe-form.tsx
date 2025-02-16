@@ -3,10 +3,10 @@ import React, { useState, useRef } from "react"
 
 import { ThemedView } from "@/components/ThemedView"
 import { ThemedText } from "@/components/ThemedText"
-import RecipeInfo from "./recipe-info"
-import RecipeIngredients from "./recipe-ingredients"
-import RecipeSteps from "./recipe-steps"
-import RecipeSave from "./recipe-save"
+import RecipeInfo from "../../../components/recipe-steps/DetailsStep"
+import RecipeIngredients from "../../../components/recipe-steps/IngredientsStep"
+import RecipeSteps from "../../../components/recipe-steps/StepsStep"
+import RecipeSave from "../../../components/recipe-steps/CookingTimeStep"
 
 type Recipe = {
   name: string,
