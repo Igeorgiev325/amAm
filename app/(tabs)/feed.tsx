@@ -109,7 +109,7 @@ export default function FeedScreen() {
         onProgressChange={progress}
         // autoPlayInterval={10000}
         // autoPlay
-        loop={true}
+        loop={false}
         enabled={true}
         renderItem={({ index }) => data[index]}
       />

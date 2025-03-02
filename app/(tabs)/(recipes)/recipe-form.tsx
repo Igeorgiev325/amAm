@@ -88,6 +88,16 @@ const Recipe = () => {
   };
 
   const addStepField = () => {
+    let canCreate = true 
+    recipe.steps.forEach(s => {
+      if (s.name !== '' && s.description !== '') {
+        console.log("Create new step")
+      } else {
+        canCreate = false
+      }
+    })
+
+    canCreate ?
     setRecipe((prev) => {
       const newSteps = [
         ...prev.steps,
@@ -96,7 +106,8 @@ const Recipe = () => {
       // Update currentStepIndex to point to the newly added step.
       setCurrentStepIndex(newSteps.length - 1);
       return { ...prev, steps: newSteps };
-    });
+    })
+    : ''
   };
 
   const logRecipe = () => {
